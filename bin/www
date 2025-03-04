@@ -28,12 +28,15 @@ const io = new Server(server, {
   },
 });
 io.on("connection", (socket) => {
-  console.log("a user connected");
-  console.log(socket.id);
+  console.log("New connection:", socket.id);
+  socket.on("message", (msg) => {
+    console.log("Received message:", msg);
+  });
+  socket.on("any", (eventName, ...args) => {
+    // Catch all events
+    console.log("Caught event:", eventName, args);
+  });
 });
-/**
- * Listen on provided port, on all network interfaces.
- */
 
 server.listen(port);
 server.on("error", onError);
