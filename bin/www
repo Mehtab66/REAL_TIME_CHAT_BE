@@ -20,6 +20,7 @@ app.set("port", port);
  */
 
 var server = http.createServer(app);
+
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:5173",
@@ -28,13 +29,9 @@ const io = new Server(server, {
   },
 });
 io.on("connection", (socket) => {
-  console.log("New connection:", socket.id);
   socket.on("message", (msg) => {
     console.log("Received message:", msg);
-  });
-  socket.on("any", (eventName, ...args) => {
-    // Catch all events
-    console.log("Caught event:", eventName, args);
+    io.emit("ReceivedMessage", msg);
   });
 });
 
